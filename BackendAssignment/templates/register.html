@@ -1,0 +1,17 @@
+<html>
+    <head>
+
+    </head>
+    <body>
+        <form action="register" method="POST">
+            {% csrf_token %}
+         
+            Name: <input type="text" name="name"><br>
+            Email: <input type="email" name="email"><br>
+            Followers : <input type="number" name="followers"><br>
+            Following : <input type="number" name="following"><br>
+            Password: <input type="password" name="password"><br>
+            <input type="submit">
+        </form>
+    </body>
+</html>

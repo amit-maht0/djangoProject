@@ -1,0 +1,49 @@
+<html>
+    <head>
+        <script>
+            // Get the token from the query parameter in the URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+    
+            if (token) {
+                // Decode the token (assuming it's in the format "header.payload.signature")
+                const tokenParts = token.split('.');
+                if (tokenParts.length === 3) {
+                    const payloadBase64 = tokenParts[1];
+                    const payloadJson = JSON.parse(atob(payloadBase64));
+                    var userId = payloadJson.user_id;
+                    // Access the payload
+                    console.log('Decoded Token Payload:', payloadJson);
+                    
+                    // You can access individual claims from the payload, e.g., payloadJson.sub for the subject claim
+                } else {
+                    console.error('Invalid token format.');
+                }
+            } else {
+                console.error('Token not found in the URL.');
+            }
+        </script>
+    </head>
+    <body>
+        <div id="tokenDisplay">
+            <p>Token:</p>
+            <pre id="tokenText"></pre>
+        </div>
+        <script>
+            // Display the token on the page (for demonstration purposes)
+            const tokenText = document.getElementById('tokenText');
+            tokenText.textContent = token;
+        </script>
+        <form action="{% url 'post' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="userId" id="userId" value="">
+            Post: <textarea id="posts" name="posts" rows="4" cols="50"></textarea><br>
+            <input type="submit" value="Submit">
+        </form>
+        
+        <script>
+            // Set the userId value in the hidden input field
+            document.getElementById('userId').value = userId;
+        </script>
+    </body>
+</html>
